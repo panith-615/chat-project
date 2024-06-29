@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model PollOption {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  active        Boolean?
+  breakoutRooms BreakoutRoom[]
+  createdAt     DateTime       @default(now())
+  createdBy     String?
+  creator       String?
+  id            String         @id @default(cuid())
+  isActive      Boolean?
+  name          String?
+  roomId        String?
+  updatedAt     DateTime       @updatedAt
+}
+
+model Message {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model BreakoutRoom {
+  active    Boolean?
+  createdAt DateTime @default(now())
+  creator   String?
+  id        String   @id @default(cuid())
+  name      String?
+  room      Room?    @relation(fields: [roomId], references: [id])
+  roomId    String?
+  updatedAt DateTime @updatedAt
+}
+
+model Poll {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
